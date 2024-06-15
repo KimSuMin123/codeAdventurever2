@@ -6,6 +6,7 @@ import monster3 from '../img/monster3.png';
 
 function ExplainPage({ setMode }) {
     const [exp, setExp] = useState(0);
+    const [tell, setTell] = useState('');
 
     useEffect(() => {
         fetch("http://localhost:3001/userinfo")
@@ -13,6 +14,14 @@ function ExplainPage({ setMode }) {
             .then((data) => {
                 if (data && data.experience) {
                     setExp(data.experience);
+                }
+            });
+
+        fetch("http://localhost:3001/getTell")
+            .then((res) => res.json())
+            .then((data) => {
+                if (data && data.length > 0 && data[0].tell) {
+                    setTell(data[0].tell);
                 }
             });
     }, []);
@@ -43,6 +52,7 @@ function ExplainPage({ setMode }) {
                     <li>유저가 정답을 맞추면 유저가 공격, 유저가 틀리면 몬스터 공격</li>
                     <li>유저나 몬스터 중 하나라도 체력이 0이 되면 게임 종료</li>
                 </RuleList>
+                <Text>{tell}</Text>
                 <Text>몬스터들을 물리치고 왕국을 탈출하세요!</Text>
                 <div>
                     <MonsterImage src={monster1} alt="Monster 1" />
